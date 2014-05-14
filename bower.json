@@ -1,0 +1,24 @@
+{
+  "name": "tooManyTabs",
+  "version": "0.0.1",
+  "authors": [
+    "Lauris <lauris@datazenit.com>"
+  ],
+  "description": "Hide overflowing tabs and show a more button instead.",
+  "main": "toomanytabs.js",
+  "keywords": [
+    "jquery",
+    "tabs",
+    "overflow",
+    "responsive"
+  ],
+  "license": "MIT",
+  "homepage": "http://datazenit.com/too-many-tabs",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
