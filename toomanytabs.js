@@ -31,6 +31,9 @@
             // define $tabs
             var $tabs = $(plugin.config.tabSelector, this);
 
+            // show all tabs
+            $tabs.show();
+
             // calculate reserved space for other elements than tabs
             var reservedWidth = 0;
             $(plugin.config.excludeSelector, this).each(function () {
