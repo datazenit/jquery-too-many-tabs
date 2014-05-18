@@ -1,8 +1,7 @@
 jquery-too-many-tabs
 ====================
 
-Hides overflowing tabs and show them under a designated "more" button. Makes your tab bar more responsive. 
-Works great together with Twitter Bootstrap. 
+Make your tab bar more responsive – jquery-too-many-tabs automatically hides overflowing tabs and shows them under "more" button. Works great with Twitter Bootstrap and it's Dropdown plugin. 
 
 ## Installation
 
