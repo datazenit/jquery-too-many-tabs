@@ -28,8 +28,8 @@
             var moreTabWidth = plugin.$moreTab.width();
             plugin.$moreTab.hide();
 
-            // define $tabs
-            var $tabs = $(plugin.config.tabSelector, this);
+            // define $tabs and reverse them, because we want to start hiding from the right side
+            var $tabs = $($(plugin.config.tabSelector, this).get().reverse());
 
             // show all tabs
             $tabs.show();
