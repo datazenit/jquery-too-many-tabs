@@ -31,8 +31,9 @@
             var moreTabWidth = plugin.$moreTab.width();
             plugin.$moreTab.hide();
 
-            // show all tabs
-            $tabs.show();
+            // restore tabs
+            plugin.$dropdown.find("li")
+              .insertBefore($(plugin.config.moreTabSelector));
 
             // calculate total width of tabs
             tabsWidth = 0;
@@ -51,7 +52,8 @@
             // check if there is enough space for tabs in available space
             if (tabsWidth > availableSpace) {
 
-                // there is not enough space for all tabs, let's hide some and show them under $moreTab
+                // there is not enough space for all tabs,
+                // let's hide some and show them under $moreTab
 
                 // reset moreTab
                 plugin.$dropdown.html("");
@@ -74,15 +76,16 @@
                         plugin.addTabToDropdown($(this));
 
                         // hide tab
-                        $(this).hide();
+                        // $(this).hide();
                     }
                 });
             } else {
                 // hide more tab, because there is space for all tabs
                 plugin.$moreTab.hide();
 
-                // show all tabs
-                $tabs.show();
+                // restore tabs
+                plugin.$dropdown.find("li")
+                  .insertBefore($(plugin.config.moreTabSelector));
             }
         };
 
@@ -92,9 +95,7 @@
          * @param $el jQuery element to be be added to the Dropdown menu
          */
         plugin.addTabToDropdown = function ($el) {
-            var $a = $el.find("a").clone();
-            var $li = $("<li>").append($a);
-            plugin.$dropdown.append($li);
+            $el.appendTo(plugin.config.dropdownSelector);
         };
 
         /**
