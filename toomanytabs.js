@@ -1,4 +1,7 @@
 (function ($) {
+    var reservedWidth = 0;
+    var tabsWidth = 0;
+    var $tabs;
     $.fn.tooManyTabs = function (options) {
 
         var plugin = this;
@@ -8,9 +11,9 @@
             // moreTab is the element which will be shown when there is not enough space for tabs
             moreTabSelector: ".more-tab",
             // hidden tabs will be added to this drop down
-            dropdownSelector: ".dropdown-menu",
+            dropdownSelector: ".more-tab .dropdown-menu",
             // selector for tabs which should be readjusted
-            tabSelector: "li:not(.action-tab)",
+            tabSelector: "ul.nav-tabs>li:not(.action-tab)",
             // exclude elements from tabSelector
             excludeSelector: ".action-tab:visible"
         };
@@ -28,16 +31,15 @@
             var moreTabWidth = plugin.$moreTab.width();
             plugin.$moreTab.hide();
 
-            // define $tabs and reverse them, because we want to start hiding from the right side
-            var $tabs = $($(plugin.config.tabSelector, this).get().reverse());
-
             // show all tabs
             $tabs.show();
 
-            // calculate reserved space for other elements than tabs
-            var reservedWidth = 0;
-            $(plugin.config.excludeSelector, this).each(function () {
-                reservedWidth += parseInt($(this).width());
+            // calculate total width of tabs
+            tabsWidth = 0;
+
+            // @fixme poor performance, fix this
+            $tabs.each(function () {
+                tabsWidth += parseInt($(this).width());
             });
 
             // calculate width of wrapper element
@@ -45,12 +47,6 @@
 
             // calculate available space for tabs
             var availableSpace = outerWidth - reservedWidth;
-
-            // calculate total width of tabs
-            var tabsWidth = 0;
-            $tabs.each(function () {
-                tabsWidth += parseInt($(this).width());
-            });
 
             // check if there is enough space for tabs in available space
             if (tabsWidth > availableSpace) {
@@ -105,8 +101,19 @@
          * Bind events (resize)
          */
         plugin.bindEvents = function () {
+            var rt;
             $(window).resize(function () {
-                plugin.readjustTabs();
+
+                // clear resize timeout
+                clearTimeout(rt);
+
+                // readjusting tabs on every resize event is very costly
+                // performance wise so we are adding 500ms timeout
+                rt = setTimeout(function () {
+                    // readjust tabs only if there is no resize event for more
+                    // than 500ms
+                    plugin.readjustTabs();
+                }, 500);
             });
         };
 
@@ -116,6 +123,21 @@
          */
         var init = function (options) {
             plugin.config = $.extend({}, defaults, options);
+
+            // define $tabs and reverse them, because we want to start hiding from the right side
+            $tabs = $($(plugin.config.tabSelector).get().reverse());
+
+            // calculate reserved space for other elements than tabs
+            reservedWidth = 0;
+            $(plugin.config.excludeSelector).each(function () {
+                reservedWidth += parseInt($(this).width());
+            });
+
+            // calculate total width of tabs
+            tabsWidth = 0;
+            $tabs.each(function () {
+                tabsWidth += parseInt($(this).width());
+            });
 
             plugin.bindEvents();
             plugin.readjustTabs();
